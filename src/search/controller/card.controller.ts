@@ -1,6 +1,5 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { CardService } from '../service/card.service';
-import { Card } from '../../model/card.model';
 
 @Controller('cards')
 export class CardController {

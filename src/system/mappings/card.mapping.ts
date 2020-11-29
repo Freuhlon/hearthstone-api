@@ -6,7 +6,7 @@ export const cardMapping = {
     type: 'text',
   },
   collectible: {
-    type: 'text',
+    type: 'boolean',
   },
   cost: {
     type: 'integer',

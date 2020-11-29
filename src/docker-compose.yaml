@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:10
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    restart: always
+
+  elastic:
+    image: elasticsearch:7.3.2
+    ports:
+      - "9300:9300"
+      - "9200:9200"
+    environment:
+      discovery.type: single-node
+    restart: always
+
+  kibana:
+    image: kibana:7.3.2
+    ports:
+      - "5601:5601"
+    restart: always
+    links:
+      - elastic
+    environment:
+      ELASTICSEARCH_HOSTS: http://elastic:9200

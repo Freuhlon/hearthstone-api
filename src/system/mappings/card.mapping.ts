@@ -15,13 +15,13 @@ export const cardMapping = {
     type: 'integer',
   },
   flavor: {
-    type: 'text',
+    type: 'nested',
   },
   id: {
     type: 'text',
   },
   name: {
-    type: 'text',
+    type: 'nested',
   },
   rarity: {
     type: 'text',
@@ -30,7 +30,7 @@ export const cardMapping = {
     type: 'text',
   },
   text: {
-    type: 'text',
+    type: 'nested',
   },
   type: {
     type: 'text',

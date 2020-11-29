@@ -1,14 +1,14 @@
 import {Module} from '@nestjs/common';
 import {SearchModule} from './search/search.module';
 import {BatchModule} from './batch/batch.module';
-import {CardController} from './search/controller/card.controller';
+import {AppController} from "./app.controller";
 
 @Module({
     imports: [
         SearchModule,
         BatchModule
     ],
-    controllers: [CardController]
+    controllers: [AppController]
 })
 export class AppModule {
 }

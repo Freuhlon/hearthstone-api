@@ -3,6 +3,7 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 import { EsClientService } from '../../system/es-client.service';
 import { Card } from '../../model/card.model';
 import { cardMapping } from '../../system/mappings/card.mapping';
+import {ConfigService} from "../../config/config.service";
 
 @Injectable()
 export class CronService {
@@ -10,10 +11,10 @@ export class CronService {
   private readonly logger = new Logger(CronService.name);
   private readonly INDEX_NAME = 'cards';
 
-  constructor(private readonly esClientService: EsClientService, private readonly httpService: HttpService) {
+  constructor(private readonly esClientService: EsClientService, private readonly httpService: HttpService, private readonly configService: ConfigService) {
   }
 
-  @Cron(CronExpression.EVERY_12_HOURS)
+  @Cron(CronExpression.EVERY_2_HOURS)
   async handleCron() {
 
     this.logger.log('Lancement du batch ...');
@@ -37,8 +38,7 @@ export class CronService {
     await this.esClientService.mappings(this.INDEX_NAME, cardMapping);
 
     this.logger.log('Récupération des données');
-    const cards: Array<Card> = (await this.httpService.get<Array<Card>>('https://api.hearthstonejson.com/v1/44582/frFR/cards.collectible.json').toPromise()).data;
-    console.log(cards.length);
+    const cards: Array<Card> = (await this.httpService.get<Array<Card>>(this.configService.get('HEARTHSTONE_CARD_API_FRENCH')).toPromise()).data;
 
     const startTime = new Date().getTime();
     for (const card of cards) {
@@ -48,7 +48,7 @@ export class CronService {
     const endTime = new Date().getTime();
     const duration = (endTime - startTime) / 1000;
 
-    this.logger.log(`Indéxation terminée, a duré : ${duration} secondes`);
+    this.logger.log(`Indéxation terminée, a duré : ${duration} secondes pour ${cards.length} cartes au total.`);
   }
 
 }
